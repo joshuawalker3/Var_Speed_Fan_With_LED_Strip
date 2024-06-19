@@ -4,7 +4,8 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
 
-set(EXTRA_COMPONENT_DIRS "Components/LED-Strip-Driver")
+set(EXTRA_COMPONENT_DIRS "Components/LED-Strip-Driver" 
+						 "Components/Motor-Control-Driver")
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(Var_Speed_Fan_With_LED_Strip)

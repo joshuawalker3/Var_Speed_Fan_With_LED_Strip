@@ -1,88 +1,110 @@
+/*
+Author: Joshua Walker
+Date: 18-June-2024
+Version: 1.0
+*/
+
 #include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
 #include "esp_err.h"
-#include "driver/ledc.h"
+#include "driver/ledc.h" //Chosen for simplicity
 #include "driver/gpio.h"
 #include "motor_ctrl.h"
 
-void initialize_timer(Motor_Struct* motor) {
-
+/*
+init_timer initializes the timer for the PWM module
+args: motor a pointer to a struct representing a PWM DC Motor
+*/
+void init_timer(Motor_Struct* motor) {
 	ledc_timer_config_t ledc_timer = {
-		.speed_mode = motor->mode, //set mode
-		.duty_resolution = motor->duty_resolution, //set resolution
-		.timer_num = motor->timer, //set timer
-		.freq_hz = freq_hz, //set freq
-		.clk_cfg = clk_cfg //set clock ticks
+		.speed_mode = motor->mode, 
+		.duty_resolution = motor->duty_resolution, 
+		.timer_num = motor->timer, 
+		.freq_hz = motor->freq_hz, 
+		.clk_cfg = motor->clk_cfg 
 	};
 
 	ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
 }
 
-void initialize_channel(Motor_Struct* motor) {
-
+/*
+init_channel initializes the channel for the PWM module
+args: motor a pointer to a struct representing a PWM DC Motor
+*/
+void init_channel(Motor_Struct* motor) {
 	ledc_channel_config_t ledc_channel = {
-		.speed_mode = speed_mode, //set speed
-		.channel = channel, //set channel
-		.timer_sel = timer_num, //set timer
-		.intr_type = intr_type, //set interrupt type
-		.gpio_num = gpio_num, //set pin
-		.duty = duty, //set initial duty %
-		.hpoint = hpoint //set phase shift
+		.speed_mode = motor->mode, 
+		.channel = motor->channel, 
+		.timer_sel = motor->timer, 
+		.intr_type = motor->intr_type, 
+		.gpio_num = motor->pwm_pin, 
+		.duty = motor->duty_resolution, 
+		.hpoint = motor->hpoint //set phase shift. Typically 0
 	};
 
 	ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
 }
 
-void update_and_change_motor_speed(
-	ledc_mode_t speed_mode,
-	ledc_channel_t channel,
-	uint32_t duty) {
-
-	ESP_ERROR_CHECK(ledc_set_duty(speed_mode, channel, duty)); //Update duty to zero for channel
-	ESP_ERROR_CHECK(ledc_update_duty(speed_mode, channel)); //Applies changes to the channel
+/*
+update_and_change_motor_speed sets the duty resolution (speed) for a channel then
+updates the cchannel
+args: motor a pointer to a struct representing a PWM DC Motor
+*/
+void update_and_change_motor_speed(Motor_Struct* motor) {
+	ESP_ERROR_CHECK(ledc_set_duty(motor->mode, motor->channel, motor->duty_resolution)); 
+	ESP_ERROR_CHECK(ledc_update_duty(motor->mode, motor->channel));
 }
 
-void initialize_motor_speed_buttons(int increase_speed_pin, int decrease_speed_pin) {
+/*
+init_motor_speed_buttons initializes the input GPIO pins for changing
+motor speed 
+args: motor a pointer to a struct representing a PWM DC Motor
+*/
+void init_motor_speed_buttons(Motor_Struct* motor) {
 	//reset pin buffers
-	ESP_ERROR_CHECK(gpio_reset_pin(increase_speed_pin));
-	ESP_ERROR_CHECK(gpio_reset_pin(decrease_speed_pin));
+	ESP_ERROR_CHECK(gpio_reset_pin(motor->increase_pin));
+	ESP_ERROR_CHECK(gpio_reset_pin(motor->decrease_pin));
 
 	//Start Pins
-	ESP_ERROR_CHECK(gpio_set_direction(increase_speed_pin, GPIO_MODE_INPUT));
-	ESP_ERROR_CHECK(gpio_set_direction(decrease_speed_pin, GPIO_MODE_INPUT));
-
-	increase_pin = increase_speed_pin;
-	decrease_pin = decrease_speed_pin;
-
+	ESP_ERROR_CHECK(gpio_set_direction(motor->increase_pin, GPIO_MODE_INPUT));
+	ESP_ERROR_CHECK(gpio_set_direction(motor->decrease_pin, GPIO_MODE_INPUT));
 }
 
-void default_motor_initialization(Motor_Struct* motor) {
-	initialize_timer(LEDC_MODE, LEDC_DUTY_RES, LEDC_TIMER, LEDC_FREQUENCY, LEDC_CLK_CFG);
+/*
+motor_init initializes a dev board for use with a PWM DC Motor
+args: motor a pointer to a struct representing a PWM DC Motor
+*/
+void motor_init(Motor_Struct* motor) {
+	init_timer(motor);
 
-	initialize_channel(motor->pwm_pin, LEDC_MODE, LEDC_CHANNEL, LEDC_INTR_TYPE, LEDC_TIMER, ZERO_POWER, LEDC_PHASE_SHIFT);
+	init_channel(motor);
 
-	initialize_motor_speed_buttons(motor->increase_speed_pin, motor->decrease_speed_pin);
-
-	xTaskCreate(motor_driver, "Motor Driver", 1024, NULL, 3, NULL);
+	init_motor_speed_buttons(motor);
 }
 
+/*
+motor_driver is the main driver for controlling a PWM motor.
+args: args a void pointer passed in when the task is created.
+*/
 void motor_driver(void* args) {
+	Motor_Struct* motor = (Motor_Struct*)args;
+	update_and_change_motor_speed(motor);
 	while(1) {
-		if (!gpio_get_level(decrease_pin) != !gpio_get_level(increase_pin)) { //XOR Operation
-			if (gpio_get_level(decrease_pin) && motor_power != ZERO_POWER) {
-				motor_power--;
-				update_and_change_motor_speed(LEDC_MODE, LEDC_CHANNEL, motor_power);
-				while (gpio_get_level(decrease_pin)) {
+		if (!gpio_get_level(motor->decrease_pin) != !gpio_get_level(motor->increase_pin)) { //XOR Operation. Prevents acting on simultaneous button presses
+			if (gpio_get_level(motor->decrease_pin) && motor->motor_power != ZERO_POWER) {
+				motor->motor_power--;
+				update_and_change_motor_speed(motor);
+				while (gpio_get_level(motor->decrease_pin)) {
 					delay(10);
 				}
 			}
-			if (gpio_get_level(increase_pin) && motor_power != HIGH_POWER) {
-				motor_power++;
-				update_and_change_motor_speed(LEDC_MODE, LEDC_CHANNEL, motor_power);
-				while (gpio_get_level(increase_pin)) {
+			if (gpio_get_level(motor->increase_pin) && motor->motor_power != HIGH_POWER) {
+				motor->motor_power++;
+				update_and_change_motor_speed(motor);
+				while (gpio_get_level(motor->increase_pin)) {
 					delay(10);
 				}
 			}
 		}
+		delay(10);
 	}
 }

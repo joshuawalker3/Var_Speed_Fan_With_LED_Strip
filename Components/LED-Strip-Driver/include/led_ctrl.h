@@ -1,3 +1,9 @@
+/*
+Author: Joshua Walker
+Date: 18-June-2024
+Version: 1.0
+*/
+
 #ifndef LED_CTRL_H
 #define LED_CTRL_H
 
@@ -17,7 +23,7 @@ Pin CTRL
 #define OFF 0
 
 /*
-Combinations
+Color Combinations
 */
 typedef enum {
 	ALL_OFF,
@@ -30,11 +36,19 @@ typedef enum {
 	ALL_ON
 }Combination;
 
+/*
+Modes
+*/
 typedef enum {
 	STATIC = 1,
 	CYCLE = -1
 }Mode;
 
+/*
+Struct representing a RGB LED Strip
+Static_Mode_Handle and Cycle_Mode_Handle are typically initialized as
+NULL as the driver will update their values
+*/
 typedef struct {
 	int red_pin;
 	int green_pin;
@@ -47,14 +61,22 @@ typedef struct {
 	TaskHandle_t Cycle_Mode_Handle;
 }LED_Struct;
 
-void led_init(int red, int green, int blue);
-void cycle_button_init(int button);
-void mode_button_init(int button);
-void default_led_strip_init(LED_Struct* LED_Strip);
+void led_init(LED_Struct* LED_Strip);
+
+void color_button_init(LED_Struct* LED_Strip);
+
+void mode_button_init(LED_Struct* LED_Strip);
+
+void led_strip_init(LED_Struct* LED_Strip);
+
 void set_led_color_switch(LED_Struct* LED_Strip);
+
 void set_led_color(LED_Struct* LED_Strip, int red, int green, int blue);
+
 void led_strip_static_color(void* args);
+
 void led_strip_cycle_colors(void* args);
-void led_mode_handler(void* args);
+
+void led_driver(void* args);
 
 #endif
