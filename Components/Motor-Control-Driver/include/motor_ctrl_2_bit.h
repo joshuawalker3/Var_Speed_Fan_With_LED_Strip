@@ -17,22 +17,21 @@ standard delay
 #endif
 
 /*
-Power Levels
+Power Levels for 2 bit resolution
 */
 typedef enum {
-	ZERO_POWER,
-	LOW_POWER,
-	HIGH_POWER
-}power_level;
+	ZERO_POWER = 0,
+	LOW_POWER = 2,
+	HIGH_POWER = 4
+}Power_Level;
 
 /*
-Struct representing a PWM DC Motor
+Struct representing a PWM DC Motor. Duty resolution is 2-bits
 */
 typedef struct {
 	ledc_timer_t timer;
 	ledc_mode_t mode;
 	ledc_channel_t channel;
-	uint32_t duty_resolution;
 	ledc_clk_cfg_t clk_cfg;
 	ledc_intr_type_t intr_type;
 	uint32_t freq_hz;
@@ -40,18 +39,18 @@ typedef struct {
 	int pwm_pin;
 	int decrease_pin;
 	int increase_pin;
-	power_level motor_power;
-}Motor_Struct;
+	Power_Level motor_power;
+}Motor_Struct_2_Bit;
 
-void init_timer(Motor_Struct* motor);
+void init_timer(Motor_Struct_2_Bit* motor);
 
-void init_channel(Motor_Struct* motor);
+void init_channel(Motor_Struct_2_Bit* motor);
 
-void update_and_change_motor_speed(Motor_Struct* motor);
+void update_and_change_motor_speed(Motor_Struct_2_Bit* motor);
 
-void init_motor_speed_buttons(Motor_Struct* motor);
+void init_motor_speed_buttons(Motor_Struct_2_Bit* motor);
 
-void motor_init(Motor_Struct* motor);
+void motor_init(Motor_Struct_2_Bit* motor);
 
 void motor_driver(void* args);
 

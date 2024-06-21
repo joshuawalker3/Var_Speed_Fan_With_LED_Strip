@@ -61,7 +61,7 @@ typedef struct {
 	TaskHandle_t Cycle_Mode_Handle;
 }LED_Struct;
 
-void led_init(LED_Struct* LED_Strip);
+void led_strip_led_init(LED_Struct* LED_Strip);
 
 void color_button_init(LED_Struct* LED_Strip);
 
