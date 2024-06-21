@@ -123,7 +123,7 @@ void motor_driver(void* args) {
 			if (gpio_get_level(motor->decrease_pin) && motor->motor_power != ZERO_POWER) {
 				ESP_LOGI(taskName, "Decreasing Motor Power. Slowin her down Boss!");
 
-				motor->motor_power--;
+				motor->motor_power -= 2;
 
 				update_and_change_motor_speed(motor);
 
@@ -134,7 +134,7 @@ void motor_driver(void* args) {
 			if (gpio_get_level(motor->increase_pin) && motor->motor_power != HIGH_POWER) {
 				ESP_LOGI(taskName, "Increasing Motor Power. YeeHaw!");
 
-				motor->motor_power++;
+				motor->motor_power += 2;
 				
 				update_and_change_motor_speed(motor);
 

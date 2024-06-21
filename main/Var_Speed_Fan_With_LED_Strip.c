@@ -28,7 +28,7 @@ Constants for motor.
 #define MOTOR_INTR_TYPE LEDC_INTR_DISABLE //Disable interrupts
 #define MOTOR_FREQUENCY 4000 //4 kHz
 #define MOTOR_PHASE_SHIFT 0 //0 phase shift
-#define MOTOR_PWM_PIN 25 //Motor PWM Pin
+#define MOTOR_PWM_PIN 19 //Motor PWM Pin
 #define MOTOR_DECREASE_PIN 32 //Decrease speed button
 #define MOTOR_INCREASE_PIN 33 //Increase speed button
 
