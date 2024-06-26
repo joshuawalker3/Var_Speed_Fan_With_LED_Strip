@@ -1,4 +1,4 @@
-23711231307749090
+23714670021518014
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -54390,12 +54390,26 @@ Through hole pin header THT 2x15 2.54mm double row
 30
 30
 Custom
+Buck_Converter
+DCDC-Converter, TRACO, THB10-xxxx, Dual, 10W, Rev. December 07. 2023 (Script generated with StandardBox.py) (https://www.tracopower.com/products/thb10.pdf)
+DCDC-Converter TRACO THB10 THT 2"x1" 10W
+0
+4
+4
+Custom
 ESP32-C3-DevKitC-02
 
 
 0
 30
 30
+Custom
+SW_PUSH_6mm
+Generic 6mm SW tactile push button
+tact sw push 6mm
+0
+4
+4
 Custom
 TO-92_Inline
 TO-92 leads in-line, narrow, oval pads, drill 0.75mm (see NXP sot054_po.pdf)
