@@ -1,4 +1,4 @@
-23714670021518014
+23716389559825175
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -54398,6 +54398,13 @@ DCDC-Converter TRACO THB10 THT 2"x1" 10W
 4
 Custom
 ESP32-C3-DevKitC-02
+
+
+0
+30
+30
+Custom
+MODULE_ESP32_DEVKIT_V1_NO_MOUNT
 
 
 0
