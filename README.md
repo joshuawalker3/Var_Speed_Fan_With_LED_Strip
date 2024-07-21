@@ -1,4 +1,4 @@
-# **Variable Speed Desk for Use While Soldering with RBG LED**
+# **Variable Speed Desk Fan with RGB LED for Use While Soldering**
 
 ## **Project Overview**
 An annoyance I’ve had while soldering is that the fumes from the flux burning off tends to drift directly in my face and up my nose. To solve this issue, I made this desktop fan. The fan is actually a PC chassis fan and the LED strip is a cheap LED strip I had lying around from an old PC build. 
