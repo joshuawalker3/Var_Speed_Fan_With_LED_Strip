@@ -1,7 +1,7 @@
 # **Variable Speed Desk Fan with RGB LED for Use While Soldering**
 
 ## **Project Overview**
-An annoyance I’ve had while soldering is that the fumes from the flux burning off tends to drift directly in my face and up my nose. To solve this issue, I made this desktop fan. The fan is actually a PC chassis fan and the LED strip is a cheap LED strip I had lying around from an old PC build. 
+An annoyance I’ve had while soldering is that the fumes from the flux burning off tends to drift directly in my face and up my nose. To solve this issue, I made this desktop fan. The fan is actually a PC chassis fan and the LED strip is a cheap LED strip. Any strip will work as long as they have a 4 pin connection and are Common Anode.
 
 ## **Code**
 ### *Overview*
@@ -19,7 +19,7 @@ The biggest challenge with the code was figuring out the toolchain and how the b
 ### *Overview*
 The chassis was designed in FreeCAD, sliced using Ankermake default slicer, and printed on an Ankermake M5. It was printed as one solid piece. The chassis is simply a plastic base connected to a slot for the fan and slots for the LED strip and PCB. It was designed to be as compact as possible while maintaining stability.
 ### *Challenges and Lessons Learned*
-The main challenge with the chassis was getting it to print properly. Since that are parts that are “floating” while the print is in process, supports were required for the fan slot and the circular vertical hole. The print failed twice for what is suspected to be the same reason. I had the standard print speed set, so while doing the infill the print bed can vibrate rapidly as the print head moves. This caused breaks in the supports. The solution was to simply to slow the speeds down across the board. This caused the print time to inflate from around 11 hours to 30 hours.
+The main challenge with the chassis was getting it to print properly. Since that are parts that are “floating” while the print is in process, supports were required for the fan slot and the circular vertical hole. The print failed twice for what is suspected to be the same reason. The solution was to simply to slow the speeds down across the board for the entire print. This caused the print time to inflate from around 11 hours to 30 hours.
 
 ## **PCB Design**
 ### *Overview*
