@@ -1,5 +1,7 @@
 # **Variable Speed Desk Fan with RGB LED for Use While Soldering**
 
+![Final-Product](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Finished_Product.jpeg)
+
 ## **Project Overview**
 An annoyance I’ve had while soldering is that the fumes from the flux burning off tends to drift directly in my face and up my nose. To solve this issue, I made this desktop fan. The fan is actually a PC chassis fan and the LED strip is a cheap LED strip. Any strip will work as long as they have a 4 pin connection and are Common Anode.
 
@@ -18,8 +20,20 @@ The biggest challenge with the code was figuring out the toolchain and how the b
 ## **Chassis Design and Manufacture**
 ### *Overview*
 The chassis was designed in FreeCAD, sliced using Ankermake default slicer, and printed on an Ankermake M5. It was printed as one solid piece. The chassis is simply a plastic base connected to a slot for the fan and slots for the LED strip and PCB. It was designed to be as compact as possible while maintaining stability.
+
+#### FreeCAD Model
+![Model](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/FreeCAD_Model.png)
+
 ### *Challenges and Lessons Learned*
 The main challenge with the chassis was getting it to print properly. Since that are parts that are “floating” while the print is in process, supports were required for the fan slot and the circular vertical hole. The print failed twice for what is suspected to be the same reason. The solution was to simply to slow the speeds down across the board for the entire print. This caused the print time to inflate from around 11 hours to 30 hours.
+#### Failed Print
+![Print-Fail](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Print_Fail.jpeg)
+
+#### Proper Print with Supports Connected
+![Good-Print](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Good_Print_Struct.jpeg)
+
+#### Final Print
+![Final-print](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Good_Print.jpeg)
 
 ## **PCB Design**
 ### *Overview*
@@ -27,6 +41,22 @@ The PCB was designed using KiCAD and manufactured through PCBWay. I changed PCB 
 
 Since the fan and LED strip require 12 VDC and the ESP32 requires between 3.3 – 6 VDC, the circuit is split by a buck converter that transforms 12VDC to8 around 5 VDC (I used 4.5 VDC). The PWM signal is sent directly from the ESP board to the fan. The LED strip interfaces to the ESP board via PN-2222A transistors.
 
+#### PCB Schematic
+![Schematic](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Schematic.png)
+
+#### Circuit Prototype
+![Prototype](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Prototype.jpeg)
+
+#### PCB Design
+![PCB-Design](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/PCB_Design.png)
+
 I also added some components to aid in troubleshooting such as LED’s that indicate that power is being applied to the board when off, an indication the model is on, LED’s connected in parallel to each LED GPIO to show proper response, and an LED in parallel to the fan that shows the status of the fan since the LED will change brightness as the PWM signal, and therefore fan speed, changes.
 ### *Challenges and Lessons Learned*
 This was a big step for me in PCB design since it had more components than I had ever used before. This meant that I had to be creative with routing traces. To further remove trace clutter on the PCB, I added via’s so I could have traces on both the top and bottom of the PCB.
+
+#### PCB Comparison Before and After Soldering Components
+![Top](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Comparison_Top.jpeg)
+![Bottom](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/Comparison_Bottom.jpeg)
+
+#### PCB Mounted on Chassis
+![Mounted](https://github.com/joshuawalker3/Var_Speed_Fan_With_LED_Strip/blob/main/Pictures/PCB_Mounted.jpeg)
